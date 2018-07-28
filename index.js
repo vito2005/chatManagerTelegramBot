@@ -1,10 +1,8 @@
 
-var  Agent = require( 'socks5-https-client/lib/Agent');
+const  Agent = require( 'socks5-https-client/lib/Agent');
 const config = require('config');
 const TelegramBot = require('node-telegram-bot-api');
-
-
-var request = require('request');
+const request = require('request');
 let phonenumber;
 let templates = [];
 let count = 0;
@@ -19,13 +17,25 @@ let settings ={};
 
 
 const sendTemplate = function(template){
-    request.post(`https://${settings.login}:${settings.pw}@${settings.host}`, {
-        form: {
-            number: phonenumber,
-            text: template,
-            sign: settings.sign,
-            channel: settings.channel
-        },
+
+    let formApi_id ={
+        api_id: settings.api_id,
+        to: phonenumber,
+        msg: template
+    };
+
+    let formStandart = {
+        number: phonenumber,
+        text: template,
+        sign: settings.sign,
+        channel: settings.channel
+    };
+
+    let postQuery = settings.api_id? `https://${settings.host}`: `https://${settings.login}:${settings.pw}@${settings.host}`;
+
+
+    request.post(postQuery, {
+        form: settings.api_id? formApi_id: formStandart
 
 
     }, function(err, httpResponse, body) {
@@ -33,8 +43,10 @@ const sendTemplate = function(template){
             console.error('Error:', err);
             return;
         }
-        console.log(JSON.parse(body));
+        console.log(body);
     })
+
+
 }
 
 const TOKEN = config.get('token');
@@ -92,92 +104,72 @@ const inline_keyboard = [
     ]
 ];
 
-bot.onText(/\/start/, (msg, [source, match]) =>{
+bot.onText(/\/start/,  (msg, [source, match])=> {
     const {chat: {id}} = msg;
     bot.sendMessage(id, `Введите настройки для sms api. host:`, {
         reply_markup: {
             force_reply: true
         }
-    }).then(addHost => {
-        const replyListenerId = bot.onReplyToMessage(addHost.chat.id, addHost.message_id, msg => {
-            settings.host = msg.text;
-            bot.sendMessage(id, `Введите настройки для sms api. login:`, {
-                reply_markup: {
-                    force_reply: true
-                }
-            }).then(addLogin=>{
-                bot.onReplyToMessage(addLogin.chat.id, addLogin.message_id, msg => {
-                    settings.login = msg.text;
-                    bot.sendMessage(id, `Введите настройки для sms api. password:`, {
-                        reply_markup: {
-                            force_reply: true
+    })
+        .then(addHost => {
+            const replyListenerId = bot.onReplyToMessage(addHost.chat.id, addHost.message_id, msg => {
+                settings.host = msg.text;
+                bot.sendMessage(id, `Введите настройки для sms api. api-id:`, {
+                    reply_markup: {
+                        force_reply: true
+                    }
+                }).then(addApiId => {
+                    bot.onReplyToMessage(addApiId.chat.id, addApiId.message_id, msg => {
+                        settings.api_id = msg.text;
+                        if (settings.api_id) {
+                            bot.removeReplyListener(replyListenerId);
+                            return Promise.resolve()
                         }
-                    }).then(addPW=>{
-                        bot.onReplyToMessage(addPW.chat.id, addPW.message_id, msg => {
-                            settings.pw = msg.text;
-                            bot.sendMessage(id, `Введите настройки для sms api. sign:`, {
-                                reply_markup: {
-                                    force_reply: true
-                                }
-                            }).then(addSign=>{
-                                bot.onReplyToMessage(addSign.chat.id, addSign.message_id, msg => {
-                                    settings.sign = msg.text;
-                                    bot.sendMessage(id, `Введите настройки для sms api. channel:`, {
-                                        reply_markup: {
-                                            force_reply: true
-                                        }
-                                    }).then(addChannel=>{
-                                        bot.onReplyToMessage(addChannel.chat.id, addChannel.message_id, msg => {
-                                            settings.channel = msg.text;
-                                            bot.removeReplyListener(replyListenerId);
-                                        })
+                        bot.sendMessage(id, `Введите настройки для sms api. login:`, {
+                            reply_markup: {
+                                force_reply: true
+                            }
+                        }).then(addLogin => {
+                            bot.onReplyToMessage(addLogin.chat.id, addLogin.message_id, msg => {
+                                settings.login = msg.text;
+                                bot.sendMessage(id, `Введите настройки для sms api. password:`, {
+                                    reply_markup: {
+                                        force_reply: true
+                                    }
+                                }).then(addPW => {
+                                    bot.onReplyToMessage(addPW.chat.id, addPW.message_id, msg => {
+                                        settings.pw = msg.text;
+                                        bot.sendMessage(id, `Введите настройки для sms api. sign:`, {
+                                            reply_markup: {
+                                                force_reply: true
+                                            }
+                                        }).then(addSign => {
+                                            bot.onReplyToMessage(addSign.chat.id, addSign.message_id, msg => {
+                                                settings.sign = msg.text;
+                                                bot.sendMessage(id, `Введите настройки для sms api. channel:`, {
+                                                    reply_markup: {
+                                                        force_reply: true
+                                                    }
+                                                }).then(addChannel => {
+                                                    bot.onReplyToMessage(addChannel.chat.id, addChannel.message_id, msg => {
+                                                        settings.channel = msg.text;
+                                                        bot.removeReplyListener(replyListenerId);
+                                                    })
+                                                })
+                                            })
 
+                                        })
                                     })
                                 })
-
                             })
                         })
+
                     })
                 })
             })
-
         })
-    })
+})
 
-
-    // bot.sendMessage(id, `You told me "${match}" and I'm glad to see u here`,{
-    //     reply_markup: {
-    //         inline_keyboard: [
-    //             [
-    //                 {
-    //                     text: 'Google',
-    //                     url: 'https://google.com'
-    //                 }
-    //             ],
-    //             [
-    //                 {
-    //                     text: 'back to the chat u came from',
-    //                     switch_inline_query: 'hello again!'
-    //                 }
-    //             ],
-    //             [
-    //                 {
-    //                     text: 'Stay here',
-    //                     switch_inline_query_current_chat: "It's love"
-    //                 }
-    //             ],
-    //             [
-    //                 {
-    //                     text: 'Show alert message',
-    //                     callback_data: 'hello world!'
-    //
-    //                 }
-    //             ]
-    //         ]
-    //     }
-    //
-    // })
-});
 bot.onText(/\/settings/, (msg, [source, match]) =>{
     const {chat: {id}} = msg;
     let settingsMessage = (Object.keys(settings).length == 0) ? 'No settings. Please set settings by a /start command': settings;
