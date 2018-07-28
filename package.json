@@ -1,0 +1,37 @@
+{
+  "scripts": {
+    "start": "babel-node index --presets=env"
+  },
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "config": "^1.31.0",
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
+    "node-telegram-bot-api": "^0.30.0",
+    "socks5-https-client": "^1.2.1"
+  },
+  "name": "package.json",
+  "description": "chat options for manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vito2005/chatManagerTelegramBot.git"
+  },
+  "keywords": [
+    "regular",
+    "messages",
+    "telegram",
+    "manager",
+    "bot"
+  ],
+  "author": "alexbuki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vito2005/chatManagerTelegramBot/issues"
+  },
+  "homepage": "https://github.com/vito2005/chatManagerTelegramBot#readme"
+}
