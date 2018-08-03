@@ -3,6 +3,7 @@
   "port": "1080",
   "user": "telegram",
   "pw": "telegram",
-  "token": "your token"
+  "token": "your token",
+  "smsHost": "sms.ru/sms/send"
 }
 
