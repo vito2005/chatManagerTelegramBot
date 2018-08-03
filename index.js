@@ -8,6 +8,7 @@ let count = 0;
 let settings ={};
 settings.host = config.get('smsHost');
 let regexp = /((\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?)/gim;
+let regexpKeyboard = /\/buttons/gim;
 
 const sendTemplate = function(template, id){
 
@@ -156,7 +157,6 @@ bot.onText(/\/start/,  (msg, [source, match])=> {
                 })
 })
 
-let regexpKeyboard = /\/buttons/gim;
 
 bot.onText(/\/settings/, (msg, [source, match]) =>{
     const {chat: {id}} = msg;
