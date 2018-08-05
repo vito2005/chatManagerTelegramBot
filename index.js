@@ -16,8 +16,8 @@ const sendTemplate = function(template, id){
         api_id: settings.api_id,
         to: phonenumber,
         msg: template,
-        json:1//,
-        // test:1
+        json:1,
+         test:1
     };
     let formStandart = {
         number: phonenumber,
