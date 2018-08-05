@@ -16,8 +16,8 @@ const sendTemplate = function(template, id){
         api_id: settings.api_id,
         to: phonenumber,
         msg: template,
-        json:1,
-        test:1
+        json:1//,
+        // test:1
     };
     let formStandart = {
         number: phonenumber,
@@ -31,9 +31,7 @@ const sendTemplate = function(template, id){
         formApi_id.to = teleohone.replace(/[\D]/g, '');
         formApi_id.to = (formApi_id.to.length == 10) ? '+7' + teleohone : '+7' + teleohone.slice(1)
         request.post(postQuery, {
-            form: settings.api_id ? formApi_id : formStandart
-
-
+            form: formApi_id
         }, function (err, httpResponse, body) {
             if (err) {
                 console.error('Error !!!!!!:', err);
@@ -41,6 +39,7 @@ const sendTemplate = function(template, id){
             }
             let res = JSON.parse(body);
             let responce;
+            console.log('res', res)
             if (res.sms) {
                 for (phoneinsms in res.sms) {
                     responce = (res.sms[phoneinsms].status_code == 100) ? 'Сообщение на номер ' + phoneinsms + ' успешно отправлено. Ваш баланс: ' + res.balance :
@@ -88,6 +87,7 @@ const TOKEN = config.get('token');
 
 const bot = new TelegramBot (TOKEN, {
     polling: true,
+
     request: {
         agentClass: Agent,
         agentOptions: {
