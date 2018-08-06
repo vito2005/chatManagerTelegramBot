@@ -44,6 +44,7 @@ const sendTemplate = function(template, id){
             }
             bot.sendMessage(id, responce);
             phonenumber = null;
+            formApi_id.to = null;
         })
     }
     const checkPhoneNumber = (id, msg)=> {
@@ -52,6 +53,7 @@ const sendTemplate = function(template, id){
             formApi_id.to = msg.replace(/[\D]/g, '');
             formApi_id.to = (formApi_id.to.length == 10) ? '+7' + msg : '+7' + msg.slice(1)
             requestSms(id);
+
 
         }
         else {
