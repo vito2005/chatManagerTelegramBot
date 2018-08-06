@@ -17,8 +17,8 @@ const sendTemplate = function(template, id){
         api_id: settings.api_id,
         to: phonenumber,
         msg: template,
-        json:1,
-         test:1
+        json:1//,
+         //test:1
     };
     let postQuery = `https://${settings.host}`
 
@@ -34,7 +34,7 @@ const sendTemplate = function(template, id){
             let responce;
             console.log('res', res)
             if (res.sms) {
-                for (phoneinsms in res.sms) {
+                for (var phoneinsms in res.sms) {
                     responce = (res.sms[phoneinsms].status_code == 100) ? 'Сообщение на номер ' + phoneinsms + ' успешно отправлено. Ваш баланс: ' + res.balance :
                         'ERROR: ' + res.sms[phoneinsms].status_text + '. Ваш баланс: ' + res.balance
                 }
