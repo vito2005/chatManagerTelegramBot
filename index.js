@@ -9,27 +9,20 @@ let settings ={};
 settings.host = config.get('smsHost');
 let regexp = /((\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?)/gim;
 let regexpKeyboard = /\/buttons/gim;
+let formApi_id;
 
 const sendTemplate = function(template, id){
 
-    let formApi_id ={
+     formApi_id ={
         api_id: settings.api_id,
         to: phonenumber,
         msg: template,
-        json:1//,
-         //test:1
-    };
-    let formStandart = {
-        number: phonenumber,
-        text: template,
-        sign: settings.sign,
-        channel: settings.channel
+        json:1,
+         test:1
     };
     let postQuery = `https://${settings.host}`
 
-    const requestSms = (teleohone,id)=>{
-        formApi_id.to = teleohone.replace(/[\D]/g, '');
-        formApi_id.to = (formApi_id.to.length == 10) ? '+7' + teleohone : '+7' + teleohone.slice(1)
+    const requestSms = (id)=>{
         request.post(postQuery, {
             form: formApi_id
         }, function (err, httpResponse, body) {
@@ -50,12 +43,15 @@ const sendTemplate = function(template, id){
                 responce = res.status +':' +res.status_text
             }
             bot.sendMessage(id, responce);
+            phonenumber = null;
         })
     }
     const checkPhoneNumber = (id, msg)=> {
         if (msg.match(regexp)) {
-            console.log('msg', msg)
-            requestSms(msg, id)
+            console.log('msg', msg);
+            formApi_id.to = msg.replace(/[\D]/g, '');
+            formApi_id.to = (formApi_id.to.length == 10) ? '+7' + msg : '+7' + msg.slice(1)
+            requestSms(id);
 
         }
         else {
@@ -70,17 +66,22 @@ const sendTemplate = function(template, id){
             })
         }
     }
-
+if (!formApi_id.to) {
+    phonenumber = true;
     bot.sendMessage(id, `Введите номер телефона для отправки сообщения`, {
         reply_markup: {
             force_reply: true
         }
     })
         .then(gotTelephone=>{
-        bot.onReplyToMessage(gotTelephone.chat.id, gotTelephone.message_id,  msg => {
-             checkPhoneNumber(gotTelephone.chat.id, msg.text);
+            bot.onReplyToMessage(gotTelephone.chat.id, gotTelephone.message_id,  msg => {
+                checkPhoneNumber(gotTelephone.chat.id, msg.text);
+            })
         })
-    })
+}
+else {
+    requestSms(id);
+}
 }
 
 const TOKEN = config.get('token');
@@ -155,6 +156,20 @@ bot.onText(/\/start/,  (msg, [source, match])=> {
                         })
                     })
                 })
+});
+bot.onText(regexp, (msg, [source, match]) =>{
+    if (!phonenumber){
+        const {chat: {id}} = msg;
+        phonenumber = match;
+        phonenumber = phonenumber.replace(/[\D]/g,'');
+        phonenumber = (phonenumber.length == 10)? '+7' + phonenumber: '+7' + phonenumber.slice(1)
+
+        bot.sendMessage(id, 'Выберете шаблон для отправки на номер:'+ phonenumber,{
+            reply_markup:{
+                inline_keyboard
+            }
+        })
+    }
 })
 
 
