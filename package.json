@@ -12,8 +12,8 @@
     "node-telegram-bot-api": "^0.30.0",
     "socks5-https-client": "^1.2.1"
   },
-  "name": "package.json",
-  "description": "chat options for manager",
+  "name": "sms-helper-telegram-bot",
+  "description": "a sms sending helper using telegram bot",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {},
