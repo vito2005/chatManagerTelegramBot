@@ -4,6 +4,6 @@ This is a telegram bot helper to send templates by sms using node-telegram-bot-a
 Installation
 
 Install with npm
-$ npm install orgchart
+$ npm install sms-helper-telegram-bot
 
 
