@@ -42,7 +42,7 @@ If your existing token is compromised or you lost it for some reason, use the <c
 
 <code>/setabouttext</code> — change the bot's about info, an even shorter text of up to 120 characters. Users will see this text on the bot's profile page. When they share your bot with someone, this text is sent together with the link.
 
-***
+
 <a name="Start+bot"></a>
 ### Start bot
 ***
@@ -55,8 +55,11 @@ defailt.json
 ````
 - The app uses API SMS. In this example it is http://sms.ru/sms/send. After registration you'll get <code>api_id</code>.
 - Next you can start the bot using <code>/start</code> command. The bot'll request your <code>api_id</code>.
-Paste it and you can use the bot.
+<img src="https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/2018-08-09_16-37-12.jpg">
 
+- Paste it and you can use the bot. The bot'll suggest choosing some template.
+
+<img src="https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/2018-08-09_16-40-09.jpg">
 
 
 <a name="Create+templates"></a>
