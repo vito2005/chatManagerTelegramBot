@@ -46,6 +46,16 @@ If your existing token is compromised or you lost it for some reason, use the <c
 <a name="Start+bot"></a>
 ### Start bot
 ***
+- This app use <code>a 'config' module</code>.
+To start bot you should use your token in ./config/default.json file. Paste your token in "token:" line.
+````
+js
+ "token": "your token"
+````
+- The app uses API SMS. In this example it is http://sms.ru/sms/send. After registration you'll get <code>api_id</code>.
+-Next you can start the bot using <code>/start</code> command. The bot'll request your <code>api_id</code>.
+Paste it and you can use the bot.
+
 <a name="Create+templates"></a>
 ### Create templates
 ***
