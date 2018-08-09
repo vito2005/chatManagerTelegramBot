@@ -29,12 +29,12 @@ First of all you should create your bot using @BotFather in Telegram.
 
 - The token is a string along the lines of <code>110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw</code> that is required to authorize the bot and send requests to the Bot API.
 
-<img scr = "https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/sc-2-55935622ad2333ca6b762fcf19ee8d7f-bd193.png?raw=true" height="500" width = "400">
+<img src="https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/sc-2-55935622ad2333ca6b762fcf19ee8d7f-bd193.jpg" height="700" width = "400">
 
 Generating an authorization token
 If your existing token is compromised or you lost it for some reason, use the <code>/token</code> command to generate a new one.
 
-To edit some information you can use these commands:
+- To edit some information you can use these commands:
 
 <code>/setname</code> – change your bot's name.
 
