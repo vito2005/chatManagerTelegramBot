@@ -54,7 +54,7 @@ defailt.json
  "token": "your token"
 ````
 - The app uses API SMS. In this example it is http://sms.ru/sms/send. After registration you'll get <code>api_id</code>.
--Next you can start the bot using <code>/start</code> command. The bot'll request your <code>api_id</code>.
+- Next you can start the bot using <code>/start</code> command. The bot'll request your <code>api_id</code>.
 Paste it and you can use the bot.
 
 
