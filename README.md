@@ -147,7 +147,7 @@ We can send post request to SMS API (You should use settings of your sms api pro
             }
             let res = JSON.parse(body);
             let responce;
-            console.log('res', res)
+           
             if (res.sms) {
                 for (var phoneinsms in res.sms) {
                     responce = (res.sms[phoneinsms].status_code == 100) ? 'Сообщение на номер ' + phoneinsms + ' успешно отправлено. Ваш баланс: ' + res.balance :
