@@ -21,22 +21,26 @@ $ npm install sms-helper-telegram-bot
 ### Creating new bot with BotFather
 First of all you should create your bot using @BotFather in Telegram.
 
-Use the /newbot command to create a new bot. The BotFather will ask you for a name and username, then generate an authorization token for your new bot.
+- Use the <code>/newbot</code> command to create a new bot. The BotFather will ask you for a name and username, then generate an authorization token for your new bot.
 
-The name of your bot is displayed in contact details and elsewhere.
+- The name of your bot is displayed in contact details and elsewhere.
 
-The Username is a short name, to be used in mentions and telegram.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in ‘bot’, e.g. ‘tetris_bot’ or ‘TetrisBot’.
+- The Username is a short name, to be used in mentions and telegram.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in <code>‘bot’</code>, e.g. <code>‘sohamsmarcopolo_bot’</code> or <code>‘sohamsmarcopoloBot’</code>.
 
-The token is a string along the lines of 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw that is required to authorize the bot and send requests to the Bot API.
-<img scr = "https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/sc-2-55935622ad2333ca6b762fcf19ee8d7f-bd193.png" height="500" width = "400">
+- The token is a string along the lines of <code>110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw</code> that is required to authorize the bot and send requests to the Bot API.
+
+<img scr = "https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/sc-2-55935622ad2333ca6b762fcf19ee8d7f-bd193.png?raw=true" height="500" width = "400">
+
 Generating an authorization token
-If your existing token is compromised or you lost it for some reason, use the /token command to generate a new one.
+If your existing token is compromised or you lost it for some reason, use the <code>/token</code> command to generate a new one.
 
 To edit some information you can use these commands:
 
-/setname – change your bot's name.
-/setdescription — change the bot's description, a short text of up to 512 characters, describing your bot. Users will see this text at the beginning of the conversation with the bot, titled ‘What can this bot do?’.
-/setabouttext — change the bot's about info, an even shorter text of up to 120 characters. Users will see this text on the bot's profile page. When they share your bot with someone, this text is sent together with the link.
+<code>/setname</code> – change your bot's name.
+
+<code>/setdescription</code> — change the bot's description, a short text of up to 512 characters, describing your bot. Users will see this text at the beginning of the conversation with the bot, titled ‘What can this bot do?’.
+
+<code>/setabouttext</code> — change the bot's about info, an even shorter text of up to 120 characters. Users will see this text on the bot's profile page. When they share your bot with someone, this text is sent together with the link.
 
 ***
 <a name="Start+bot"></a>
