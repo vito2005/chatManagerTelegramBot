@@ -54,7 +54,40 @@ defailt.json
  "token": "your token"
 ````
 - The app uses API SMS. In this example it is http://sms.ru/sms/send. After registration you'll get <code>api_id</code>.
-- Next you can start the bot using <code>/start</code> command. The bot'll request your <code>api_id</code>.
+- Using <code>node-telegram-bot-api</code> module:
+```js
+const TelegramBot = require('node-telegram-bot-api');
+```
+   and creating a new bot :
+   
+```js
+const bot = new TelegramBot(token, {polling: true});
+```
+We listen <code>/start</code> comand:
+
+````js
+bot.onText(/\/start/,  (msg, [source, match])=> {
+    const {chat: {id}} = msg;
+                bot.sendMessage(id, `Введите настройки для sms провайдера. api-id:`, {
+                    reply_markup: {
+                        force_reply: true
+                    }
+                }).then(addApiId => {
+                    bot.onReplyToMessage(addApiId.chat.id, addApiId.message_id, msg => {
+                        settings.api_id = msg.text;
+                        bot.sendMessage(addApiId.chat.id, 'Выберете шаблон',{
+                            reply_markup:{
+                                inline_keyboard
+                            }
+                        })
+                    })
+                })
+});
+```` 
+
+Next you can start the bot using <code>/start</code> command. 
+
+The bot'll request your <code>api_id</code>.
 <img src="https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/2018-08-09_16-37-12.jpg">
 
 - Paste it and you can use the bot. The bot'll suggest choosing some template.
