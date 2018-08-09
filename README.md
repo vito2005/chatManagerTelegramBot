@@ -28,7 +28,7 @@ The name of your bot is displayed in contact details and elsewhere.
 The Username is a short name, to be used in mentions and telegram.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in ‘bot’, e.g. ‘tetris_bot’ or ‘TetrisBot’.
 
 The token is a string along the lines of 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw that is required to authorize the bot and send requests to the Bot API.
-
+<img scr = "https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/sc-2-55935622ad2333ca6b762fcf19ee8d7f-bd193.png" height="500" width = "400">
 Generating an authorization token
 If your existing token is compromised or you lost it for some reason, use the /token command to generate a new one.
 
