@@ -104,11 +104,65 @@ The bot'll request your <code>api_id</code>.
 <a name="Parsing+phone+number"></a>
 ### Parsing phone number
 ***
+Also you can just call a keyboard  writing a phone number.
+There are a simple regexp filter for phone numbers:
+````js
+let regexp = /((\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?)/gim;
+````
+and listen event with some correction to suggest the keyboard.
+````js
+bot.onText(regexp, (msg, [source, match]) =>{
+    if (!phonenumber){
+        const {chat: {id}} = msg;
+        phonenumber = match;
+        phonenumber = phonenumber.replace(/[\D]/g,'');
+        phonenumber = (phonenumber.length == 10)? '+7' + phonenumber: '+7' + phonenumber.slice(1)
+
+        bot.sendMessage(id, 'Выберете шаблон для отправки на номер:'+ phonenumber,{
+            reply_markup:{
+                inline_keyboard
+            }
+        })
+    }
+})
+````
 <a name="Force+reply"></a>
 ### Force reply
 ***
 <a name="Send+request"></a>
 ### Send request
+Using a <code>request</code> module
+````js
+const request = require('request');
+````
+We can send post request to SMS API (You should use settings of your sms api provider).
+````js
+    const requestSms = (id)=>{
+        request.post(postQuery, {
+            form: formApi_id
+        }, function (err, httpResponse, body) {
+            if (err) {
+                console.error('Error !!!!!!:', err);
+                return;
+            }
+            let res = JSON.parse(body);
+            let responce;
+            console.log('res', res)
+            if (res.sms) {
+                for (var phoneinsms in res.sms) {
+                    responce = (res.sms[phoneinsms].status_code == 100) ? 'Сообщение на номер ' + phoneinsms + ' успешно отправлено. Ваш баланс: ' + res.balance :
+                        'ERROR: ' + res.sms[phoneinsms].status_text + '. Ваш баланс: ' + res.balance
+                }
+            }
+            else {
+                responce = res.status +':' +res.status_text
+            }
+            bot.sendMessage(id, responce);
+            phonenumber = null;
+            formApi_id.to = null;
+        })
+    }
+````
 
 
 
