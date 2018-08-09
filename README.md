@@ -3,6 +3,7 @@ There is an example of telegram bot helper to send templates by sms using node-t
 
 ## Foreword
 - First of all, thanks a lot for [node-telegram-bot-api](https://github.com/yagop/node-telegram-bot-api)'s great work.
+
 Also thanks for an amaising video tutorial [YouTube: Пишем Telegram бота на NodeJS [RUS]](https://www.youtube.com/watch?v=RS1nmDMf69U&list=PL6AOr-PZtK-mM2QC1ixyfa5CtJZGK61aN)
 
 #  **Installation**
