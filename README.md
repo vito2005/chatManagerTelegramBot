@@ -11,10 +11,8 @@ $ npm install sms-helper-telegram-bot
 
 * [Creating new bot with BotFather](#Creating+new+bot+with+BotFather)
 * [Start bot](#Start+bot)
-* [Create templates](#Create+templates)
 * [Keyboard](#Keyboard)
 * [Parsing phone number](#Parsing+phone+number)
-* [Force reply](#Force+reply)
 * [Send request](#Send+request)
 ***
 <a name="Creating+new+bot+with+BotFather"></a>
@@ -61,7 +59,19 @@ const TelegramBot = require('node-telegram-bot-api');
    and creating a new bot :
    
 ```js
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot (TOKEN, {
+    polling: true,
+
+    request: {
+        agentClass: Agent,
+        agentOptions: {
+            socksHost: config.get('url'),
+            socksPort: config.get('port'),
+            socksUsername: config.get('user'),
+            socksPassword: config.get('pw')
+        }
+    }
+});
 ```
 We listen <code>/start</code> comand:
 
@@ -94,13 +104,97 @@ The bot'll request your <code>api_id</code>.
 
 <img src="https://github.com/vito2005/chatManagerTelegramBot/blob/master/img/2018-08-09_16-40-09.jpg">
 
-
-<a name="Create+templates"></a>
-### Create templates
-***
 <a name="Keyboard"></a>
 ### Keyboard
 ***
+As you saw the Bot suggested a keyboard after setting api_id.
+To create it we used a <code>reply_markup</code> option in  <code>bot.sendMessage()</code>.
+````js
+let inline_keyboard = [
+    [
+         {
+            text: 'Пустой шаблон №1',
+            callback_data: COMMAND_TEMPLATE1
+        },
+        {
+            text: 'Пустой шаблон №2',
+            callback_data: COMMAND_TEMPLATE2
+        }
+
+    ]
+    .........
+    [
+        {
+            text: 'Добавить шаблон',
+            callback_data: COMMAND_ADDTEMPLATE
+        }
+    ]
+];
+
+......
+   bot.sendMessage(addApiId.chat.id, 'Выберете шаблон',{
+                            reply_markup:{
+                                inline_keyboard
+                            }
+                        })
+````
+
+To use the keyboard we use a <code>callback_query</code> event.
+````js
+bot.on('callback_query',  query=>{
+    const {message: {chat, message_id, text}= {}} = query
+    switch (query.data) {
+        case COMMAND_TEMPLATE1:
+            templates[0] ? sendTemplate(templates[0], chat.id) : bot.sendMessage(chat.id, 'Необходимо ввести текст шаблона №1');
+            break
+        case COMMAND_TEMPLATE2:
+            templates[1] ? sendTemplate(templates[1], chat.id) : bot.sendMessage(chat.id, 'Необходимо ввести текст шаблона №2');
+            break
+        case COMMAND_TEMPLATE3:
+            templates[2] ? sendTemplate(templates[2], chat.id) : bot.sendMessage(chat.id, 'Необходимо ввести текст шаблона №3');
+            break
+        case COMMAND_TEMPLATE4:
+            templates[3] ? sendTemplate(templates[3], chat.id) : bot.sendMessage(chat.id, 'Необходимо ввести текст шаблона №4');
+            break
+        case COMMAND_TEMPLATE5:
+            templates[4] ? sendTemplate(templates[4],chat.id) : bot.sendMessage(chat.id, 'Необходимо ввести текст шаблона №5');
+            break
+
+        case COMMAND_ADDTEMPLATE:
+
+            bot.sendMessage(chat.id, `Введите текст шаблона №${count+1}`, {
+                reply_markup: {
+                    force_reply: true
+                }
+            }).then(addTemplate => {
+                const replyListenerId = bot.onReplyToMessage(addTemplate.chat.id, addTemplate.message_id, msg => {
+                    bot.removeReplyListener(replyListenerId);
+                        templates[count] = msg.text;
+                    (count == 0) ? inline_keyboard[count][count].text = msg.text:
+                        (count == 1) ? inline_keyboard[0][count].text = msg.text:
+                            (count == 2) ? inline_keyboard[1][0].text = msg.text:
+                                (count == 3) ? inline_keyboard[1][1].text = msg.text:
+                                    (count == 4) ? inline_keyboard[1][2].text = msg.text: console.log(inline_keyboard)
+                        count++
+                    if (count>4) count = 0;
+                    bot.editMessageText('Выберете шаблон',{
+                        chat_id: chat.id,
+                        message_id:message_id,
+                        reply_markup: {
+                            inline_keyboard
+                        }
+                    })
+                })
+            })
+            break
+        default:
+    }
+    bot.answerCallbackQuery({
+        callback_query_id: query.id
+    })
+})
+````
+
 <a name="Parsing+phone+number"></a>
 ### Parsing phone number
 ***
@@ -126,9 +220,6 @@ bot.onText(regexp, (msg, [source, match]) =>{
     }
 })
 ````
-<a name="Force+reply"></a>
-### Force reply
-***
 <a name="Send+request"></a>
 ### Send request
 Using a <code>request</code> module
