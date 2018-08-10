@@ -50,7 +50,7 @@ If your existing token is compromised or you lost it for some reason, use the <c
 ### Start bot
 ***
 - This app use <code>a 'config' module</code>.
-To start bot you should use your token in ./config/default.json file. Paste your token in "token:" line.
+To start bot you should use your token in <code>./config/default.json</code> file. Paste your token in "token:" line.
 ````js
 defailt.json
 
@@ -78,7 +78,7 @@ const bot = new TelegramBot (TOKEN, {
     }
 });
 ```
-We listen <code>/start</code> comand:
+Here we listen <code>/start</code> comand:
 
 ````js
 bot.onText(/\/start/,  (msg, [source, match])=> {
