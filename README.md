@@ -260,6 +260,10 @@ We can send post request to SMS API (You should use settings of your sms api pro
     }
 ````
 
+License
+The MIT License (MIT)
+
+Copyright © 2018 alexbuki
 
 
 
