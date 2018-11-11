@@ -34,7 +34,7 @@ const sendTemplate = function(template, id){
             let responce;
             console.log('res', res)
             if (res.sms) {
-                for (var phoneinsms in res.sms) {
+                for (let phoneinsms in res.sms) {
                     responce = (res.sms[phoneinsms].status_code == 100) ? 'Сообщение на номер ' + phoneinsms + ' успешно отправлено. Ваш баланс: ' + res.balance :
                         'ERROR: ' + res.sms[phoneinsms].status_text + '. Ваш баланс: ' + res.balance
                 }
@@ -102,6 +102,8 @@ const bot = new TelegramBot (TOKEN, {
     }
 });
 
+
+
 const COMMAND_TEMPLATE1 = 'template1';
 const COMMAND_TEMPLATE2 = 'template2';
 const COMMAND_TEMPLATE3 = 'template3';
@@ -159,6 +161,19 @@ bot.onText(/\/start/,  (msg, [source, match])=> {
                     })
                 })
 });
+
+bot.onText(regexp, (msg, [source, match]) =>{
+    if (!phonenumber){
+        const {chat: {id}} = msg;
+        phonenumber = match;
+        phonenumber = phonenumber.replace(/[\D]/g,'');
+        phonenumber = (phonenumber.length == 10)? '+7' + phonenumber: '+7' + phonenumber.slice(1)
+
+        bot.sendContact(id, phonenumber,'test').then((contact)=>console.log('contact', contact))
+
+    }
+})
+
 bot.onText(regexp, (msg, [source, match]) =>{
     if (!phonenumber){
         const {chat: {id}} = msg;
@@ -171,6 +186,7 @@ bot.onText(regexp, (msg, [source, match]) =>{
                 inline_keyboard
             }
         })
+
     }
 })
 
